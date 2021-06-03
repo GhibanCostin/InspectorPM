@@ -79,7 +79,6 @@ def main():
         print("Interrupted. Gathering data...\t[Done]")
         print("Closing connection...", end='')
         module_socket.close()
-        sys.stderr = stderr_fd
         print("\t[Done]")
 
         print("Processing graphs...")
@@ -94,12 +93,21 @@ def main():
         # set the time axis
         h_time_axis = range(1, len(hourly_avg_axis) + 1)
         d_time_axis = range(1, len(daily_avg_axis) + 1)
-
         # y-axis bounds
-        min_hourly = min(hourly_avg_axis)
-        max_hourly = max(hourly_avg_axis)
-        min_daily = min(daily_avg_axis)
-        max_daily = max(daily_avg_axis)
+        try:
+            min_daily = min(daily_avg_axis)
+            max_daily = max(daily_avg_axis)
+        except ValueError:
+            print("No average per day recorded")
+        try:
+            min_hourly = min(hourly_avg_axis)
+            max_hourly = max(hourly_avg_axis)
+        except ValueError:
+            print("No average per hour recorded. Exiting...", end='')
+            sys.stderr = stderr_fd
+            print("\t[Done]")
+            exit(1)
+
 
         # plot the average density per hour
         plt.plot(h_time_axis, hourly_avg_axis)
