@@ -65,7 +65,7 @@ void printVo(float Vo) {
 
 ISR(TIMER1_COMPA_vect) {
   // interrupt code for Timer1
-  //Serial.println("timer1");
+  // Serial.println("For future use");
 }
 
 void setup() {
